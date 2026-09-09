@@ -1,0 +1,5 @@
+{
+  // clang-format is wired into `make check-format` and CI on purpose. Saving a
+  // file should not silently rewrite it — run the formatter when you mean to.
+  "format_on_save": "off"
+}

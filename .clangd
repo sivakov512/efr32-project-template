@@ -1,0 +1,18 @@
+# clangd configuration for EFR32 / Simplicity SDK.
+#
+# There is deliberately no --target and no -isystem here. Both come from the
+# compile_commands.json that `make build` writes into the project root:
+#   - clangd infers the target from the driver name (arm-none-eabi-gcc);
+#   - the newlib sysroot is injected into the database via `gcc -print-sysroot`,
+#     so this file stays free of machine specific paths and can be committed.
+#
+# Do NOT add `Remove: -mcpu=*` here (as the ESP-IDF template does). On Cortex-M33
+# that flag is the only source of architecture information: without it CMSIS
+# fails with "Unknown Arm architecture profile", followed by a cascade of
+# `call to undeclared function '__get_PRIMASK'`.
+
+CompileFlags:
+  Remove:
+    # GCC specific spec file selection. clang does not know it and reports
+    # `argument unused during compilation`; it has no effect on code analysis.
+    - --specs=*

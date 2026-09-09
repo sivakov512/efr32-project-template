@@ -1,0 +1,99 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: tbd
+label: tbd
+description: Bare-metal EFR32 application.
+category: Example|Platform
+package: platform
+quality: production
+
+sdk:
+  vendor: silabs
+  id: simplicity_sdk
+  version: 2026.6.1
+
+toolchain_settings: []
+
+component:
+  # ---- Target: select one exact part ----
+  - package: simplicity_sdk
+    vendor: silabs
+    id: EFR32MG24B210F1536IM48
+
+  # ---- Kit example: BRD4186C + BRD4002A ----
+  # For this kit, uncomment BOTH board entries and the kit setting below.
+  # Also comment out the custom-board UART entry in the next group.
+  # - package: simplicity_sdk
+  #   vendor: silabs
+  #   id: brd4186c
+  # - package: simplicity_sdk
+  #   vendor: silabs
+  #   id: brd4002a
+
+  # ---- Custom-board UART: keep exactly one driver ----
+  # MG24: iostream_eusart. MG21: change id to iostream_usart.
+  # Kit: comment out this whole entry; the board recommends its UART.
+  - package: simplicity_sdk
+    vendor: silabs
+    id: iostream_eusart
+    instance: [vcom]
+
+  # ---- Common platform: normally leave unchanged ----
+  - package: simplicity_sdk
+    vendor: silabs
+    id: device_init
+  - package: simplicity_sdk
+    vendor: silabs
+    id: clock_manager
+  - package: simplicity_sdk
+    vendor: silabs
+    id: sl_main
+  - package: simplicity_sdk
+    vendor: silabs
+    id: sleeptimer
+  - package: simplicity_sdk
+    vendor: silabs
+    id: code_classification
+  - package: simplicity_sdk
+    vendor: silabs
+    id: app_log
+
+  # ---- Optional kernel: uncomment for FreeRTOS ----
+  # - package: simplicity_sdk
+  #   vendor: silabs
+  #   id: freertos
+
+configuration:
+  # ---- Kit only: enable with the two board entries above ----
+  # - name: SL_BOARD_ENABLE_VCOM
+  #   value: 1
+
+  # ---- Initial UART baud rate: applies to the selected driver ----
+  # After generation, edit the existing driver header to change baud rate.
+  - name: SL_IOSTREAM_EUSART_VCOM_BAUDRATE
+    value: 921600
+    condition: [iostream_eusart]
+  - name: SL_IOSTREAM_USART_VCOM_BAUDRATE
+    value: 921600
+    condition: [iostream_usart]
+
+  # ---- Logger: UART stream named "vcom" is the SDK default ----
+  - name: APP_LOG_OVERRIDE_DEFAULT_STREAM
+    value: 1
+  - name: APP_LOG_TIME_ENABLE
+    value: 1
+  - name: APP_LOG_COLOR_ENABLE
+    value: 1
+  - name: APP_LOG_NEW_LINE
+    value: APP_LOG_NEW_LINE_RN
+
+# ---- Application files ----
+source:
+  - path: app.c
+
+include:
+  - path: .
+    file_list:
+      - path: app.h
+
+define:
+  - name: DEBUG_EFM

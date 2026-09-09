@@ -1,0 +1,26 @@
+name: Formatting
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  formatting:
+    # Enable checks automatically in projects created from this template.
+    if: github.repository != 'sivakov512/efr32-project-template'
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/sivakov512/llvm:19
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Validate clang-tidy configuration
+        run: clang-tidy --verify-config
+
+      - name: Check code formatting
+        run: make check-format
