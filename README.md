@@ -36,6 +36,28 @@ Generation does not install tools/packages or configure your shell.
 Make finds the SDK through SLT. Override with `SDK=/absolute/path/to/sdk` when needed.
 Add application sources to `.slcp` under `source`.
 
+## Apply to an existing project
+
+A project started from a Simplicity Studio example keeps its own sources, `.slcp`
+and readme; `apply.sh` adds the reusable part of this template: `Makefile`,
+`tools/`, clang and Zed configuration, `.gitignore` and the CI workflow. Run it
+from anywhere, for example inside the project:
+
+```sh
+~/path/to/efr32-project-template/apply.sh .
+```
+
+Rerun it after the template changes. Existing files that differ are reported
+and kept: add `--diff` to see the changes, `--force` to overwrite them, or `--dry-run`
+to report without writing. `--remove` deletes the same files again, with the
+same rules for files that differ; build output stays, so run `make clean` first
+if you want it gone.
+
+Studio example sources are not formatted to `.clang-format`; run `clang-format -i`
+on them once so `make check-format` passes. Studio also generates `cmake_iar/`
+and `cmake_llvm/`; `.gitignore` leaves them out because the Makefile builds with
+GCC only.
+
 ## Kit: BRD4186C on BRD4002A motherboard
 
 1. In `.slcp` **Kit example**, uncomment both complete board entries.
