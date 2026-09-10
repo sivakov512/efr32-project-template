@@ -14,15 +14,10 @@ GNU Make, SLC CLI, Simplicity SDK, Arm GCC, CMake 3.25+, Ninja, Commander and
 Python 3.8+ with PyYAML. Put command-line tools on `PATH`. For UART logs install
 `tio`; for debugging, J-Link and Arm GDB; for source checks, clang-tidy/clang-format.
 
-The tested Silicon Labs Python includes PyYAML. Select and check it **before Make**:
-
-```sh
-export PYTHON="$(slt where python)/bin/python3"
-"$PYTHON" -c 'import yaml'
-```
-
-Fallback: `python3 -m venv .venv`, `. .venv/bin/activate`,
-`python -m pip install PyYAML`, `export PYTHON=python3`.
+Make runs its Python helpers with the Silicon Labs Python from SLT, which
+includes PyYAML, and falls back to `python3` when SLT is not on `PATH`. Override
+with `PYTHON=/path/to/python3`. Fallback without SLT: `python3 -m venv .venv`,
+`. .venv/bin/activate`, `python -m pip install PyYAML`, `export PYTHON=python3`.
 Generation does not install tools/packages or configure your shell.
 
 ## Create a project
@@ -188,7 +183,7 @@ A `-nocp` project still needs its referenced SDK paths. Only GCC is supported.
 
 Build prepares the CMake compilation database for clangd/clang-tidy by adding
 GCC's sysroot; this avoids `stdlib.h` errors and does not change firmware builds.
-Zed tasks need the same `PYTHON`/`PATH` as terminal Make. Rerun `zed-debug-config`
+Zed tasks need the same `PATH` as terminal Make. Rerun `zed-debug-config`
 after moving/renaming the project. CI checks formatting and validates the
 clang-tidy configuration; it does not analyze or build firmware. Full `make check`
 is currently local and needs a generated project with assigned pins.

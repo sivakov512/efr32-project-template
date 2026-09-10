@@ -1,7 +1,9 @@
 # SLC generates the CMake project; this file runs everyday development commands.
 .DEFAULT_GOAL := build
-# Generation and build. SDK is read from .slcp through SLT; override if needed.
-PYTHON ?= python3
+# Generation and build. SDK version is read from .slcp; SDK and Python (with
+# PyYAML) come from SLT. Override if needed.
+SLT_PYTHON := $(shell slt where python 2>/dev/null)
+PYTHON ?= $(if $(SLT_PYTHON),$(SLT_PYTHON)/bin/python3,python3)
 SLC ?= slc
 CMAKE ?= cmake
 SLC_COPY ?= -cpsdk
