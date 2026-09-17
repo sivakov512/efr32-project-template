@@ -18,6 +18,7 @@ tools/slcp_info.py
 .clang-tidy
 .clangd
 .gitignore
+.gitattributes
 .zed/settings.json
 .zed/tasks.json
 .github/workflows/formatting.yml

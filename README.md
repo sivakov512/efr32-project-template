@@ -35,7 +35,8 @@ Add application sources to `.slcp` under `source`.
 
 A project started from a Simplicity Studio example keeps its own sources, `.slcp`
 and readme; `apply.sh` adds the reusable part of this template: `Makefile`,
-`tools/`, clang and Zed configuration, `.gitignore` and the CI workflow. Run it
+`tools/`, clang and Zed configuration, `.gitignore`, `.gitattributes` and the
+CI workflow. Run it
 from anywhere, for example inside the project:
 
 ```sh
@@ -130,6 +131,11 @@ in `config/app_log_config.h`; UART and instance `"vcom"` are the existing defaul
   use Pin Tool. Editing `pin_config.h` alone need not configure that driver.
 - `.pintool`: Pin Tool state. Commit it **together with `config/`**, application
   sources, `.slcp` and generated build inputs used by your project.
+
+Commit the generated `autogen/`, `simplicity_sdk_*/` and `cmake_gcc/` as well.
+With them in Git, CI and a fresh clone build the firmware without SLC or the SDK
+installed, which is the case Silicon Labs names for source-controlling them.
+`.gitattributes` collapses those directories in pull request reviews.
 
 Changing board components does not guarantee replacement of preserved configs.
 For another board, start fresh and migrate application code/configuration.
