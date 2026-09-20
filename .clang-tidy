@@ -49,6 +49,8 @@ CheckOptions:
     value: "k"
 
   # Members (C++ classes)
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
   - key: readability-identifier-naming.ClassMemberCase
     value: lower_case
   - key: readability-identifier-naming.ClassMemberSuffix
@@ -107,6 +109,8 @@ CheckOptions:
     value: UPPER_CASE
 
   # Constants outside classes (C/C++)
+  - key: readability-identifier-naming.LocalConstantCase
+    value: lower_case
   - key: readability-identifier-naming.ConstantCase
     value: UPPER_CASE
 
