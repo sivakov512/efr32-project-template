@@ -6,6 +6,10 @@ import shlex
 import subprocess
 import sys
 
+# Flags GCC accepts and clang does not, so clang-tidy reports them as errors
+# under WarningsAsErrors. They only affect code generation, never analysis.
+GCC_ONLY = ('-fwhole-program', '--specs=')
+
 
 def main():
     build = Path(sys.argv[1])
@@ -15,6 +19,7 @@ def main():
         if Path(entry['file']).suffix.lower() == '.s':
             continue
         args = entry.get('arguments') or shlex.split(entry['command'])
+        args = [a for a in args if not a.startswith(GCC_ONLY)]
         compiler = args[0]
         if compiler not in sysroots:
             sysroots[compiler] = subprocess.check_output(
