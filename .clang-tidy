@@ -1,7 +1,9 @@
 # Embedded C naming: snake_case, *_t structs/typedefs, UPPER_CASE enums/macros.
 # C++ classes use CamelCase; structs keep the C naming rules. All warnings -> errors.
 # Exclusions below cover app_log's switch macro and compatible application hook
-# declarations shared by app.h and SDK sl_main_init.h.
+# declarations shared by app.h and SDK sl_main_init.h. performance-no-int-to-ptr
+# is off because CMSIS peripheral macros (GPIO, IADC0, ...) cast MMIO base
+# addresses to pointers, which is inherent to bare-metal register access.
 
 Checks: |
   -*,
@@ -15,6 +17,7 @@ Checks: |
   -bugprone-macro-parentheses,
   -bugprone-switch-missing-default-case,
   performance-*,
+  -performance-no-int-to-ptr,
   portability-*,
   modernize-*,
   -modernize-macro-to-enum,
@@ -141,6 +144,6 @@ CheckOptions:
   - key: performance-unnecessary-value-param.AllowedTypes
     value: "std::unique_ptr"
   - key: readability-identifier-length.IgnoredVariableNames
-    value: "ms|ns|io|tx|rx|id|cb|fd|fn|rc"
+    value: "ms|ns|mv|io|tx|rx|id|cb|fd|fn|rc"
   - key: readability-identifier-length.IgnoredParameterNames
-    value: "ms|ns|io|tx|rx|id|cb|fd|fn|rc"
+    value: "ms|ns|mv|io|tx|rx|id|cb|fd|fn|rc"
